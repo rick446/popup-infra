@@ -1,0 +1,35 @@
+- name: Set the name of the host
+  set_fact:
+    hostname: mongod-shard{{shard_id}}-replica{{replica_id}}
+- name: Provision {{hostname}}
+  register: res
+  digital_ocean:
+    name: "{{hostname}}"
+    state: present
+    private_networking: yes
+    wait: yes
+    api_token: "{{do_api_token}}"
+    size_id: 512mb
+    image_id: ubuntu-17-10-x64
+    ssh_key_ids: 11312514
+    region_id: nyc1
+- name: Apply mongo, replica, and shard tags
+  with_items:
+    - mongo
+    - shard_{{shard_id}}
+    - replica_{{replica_id}}
+  digital_ocean_tag:
+    api_token: "{{do_api_token}}"
+    resource_id: "{{res.droplet.id}}"
+    name: "{{item}}"
+    state: present
+- name: Apply config and mongos tags
+  when: replica_id == "1"
+  with_items:
+    - config
+    - mongos
+  digital_ocean_tag:
+    api_token: "{{do_api_token}}"
+    resource_id: "{{res.droplet.id}}"
+    name: "{{item}}"
+    state: present

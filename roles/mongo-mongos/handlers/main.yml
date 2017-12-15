@@ -1,0 +1,5 @@
+---
+# handlers file for mongo-data
+- name: reload supervisor
+  become: true
+  command: supervisorctl reload

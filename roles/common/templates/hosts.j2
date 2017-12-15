@@ -1,0 +1,10 @@
+127.0.0.1 localhost
+{% for host in groups['mongo'] %}
+{% for iface in hostvars[host].do_networks.v4 %}
+{% if iface.type == 'private' %}
+{{iface.ip_address}} private_{{do_name}}
+{% else %}
+{{iface.ip_address}} {{do_name}}
+{% endif %}
+{% endfor %}
+{% endfor %}

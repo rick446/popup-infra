@@ -1,0 +1,25 @@
+---
+- hosts: mongo
+  gather_facts: false
+  vars:
+    username: ansible
+  roles:
+    - role: ansible-client
+
+- hosts: mongo
+  strategy: debug
+  roles:
+    - role: common
+    - role: mongo-common
+
+- hosts: mongo
+  roles:
+    - role: mongo-shard
+
+- hosts: mongos
+  roles:
+    - role: mongo-mongos
+
+- hosts: config
+  roles:
+    - role: mongo-config

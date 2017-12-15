@@ -1,0 +1,15 @@
+systemLog:
+  destination: file
+  path: "/var/log/mongodb/mongod-shard.log"
+  logAppend: true
+storage:
+  dbPath: /data/mongod-shard
+  journal:
+    enabled: true
+processManagement:
+  fork: true
+net:
+  bindIp: {{bind_ip}}
+  port: 27017
+setParameter:
+  enableLocalhostAuthBypass: false

@@ -1,0 +1,5 @@
+- name: "Provision mongod-shard{{shard_id}}-replica{{replica_id}}"
+  include_tasks: provision-droplet.yaml
+  with_sequence: end={{replicas}}
+  loop_control:
+    loop_var: replica_id

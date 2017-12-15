@@ -1,0 +1,7 @@
+---
+# tasks file for controller
+  - name: Provision shards
+    include_tasks: provision-shard.yaml
+    with_sequence: end={{shards}}
+    loop_control:
+      loop_var: shard_id

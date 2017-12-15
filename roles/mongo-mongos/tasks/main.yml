@@ -1,0 +1,23 @@
+---
+# tasks file for mongo-data
+- name: Create DB path
+  become: true
+  file:
+    path: /data/mongos
+    owner: mongodb
+    state: directory
+- name: Get the (private) IP address
+  with_items: "{{do_networks.v4}}"
+  when: item.type == 'public'
+  set_fact:
+    bind_ip: "{{item.ip_address}}"
+- name: Install config file
+  become: true
+  template: src=mongos.conf.j2 dest=/etc/mongos.conf
+- name: Create mongo-data supervisor service
+  become: true
+  template: src=supervisor-mongos.conf.j2 dest=/etc/supervisor/conf.d/mongos.conf
+  notify:
+    - reload supervisor
+
+

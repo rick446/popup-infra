@@ -1,0 +1,20 @@
+---
+# tasks file for ansible-client
+- name: Boostrap Ansible requirements
+  raw: apt-get install -y python python-simplejson
+  remote_user: root
+- name: Let the sudo group use sudo without a password
+  lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL) NOPASSWD: ALL'"
+  remote_user: root
+- name: create user
+  user:
+      name: '{{username}}'
+      groups: sudo
+      shell: /bin/bash
+  remote_user: root
+- name: Authorize the public key
+  authorized_key:
+    user: '{{username}}'
+    state: present
+    key: https://raw.githubusercontent.com/Arborian/ansible-class/master/training-ssh-key.pub
+  remote_user: root

@@ -1,0 +1,12 @@
+# Clean up class servers
+- hosts: mongod*
+  gather_facts: false
+  vars:
+    api_token: "{{ lookup('ini', 'api_token section=digital_ocean file=digital_ocean.ini') }}"
+  tasks:
+    - name: Delete the class servers
+      local_action:
+        module: digital_ocean
+        id: "{{do_id}}"
+        state: absent
+        api_token: "{{api_token}}"

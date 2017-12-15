@@ -1,0 +1,25 @@
+---
+# tasks file for mongo-data
+- name: Create DB path
+  become: true
+  file:
+    path: /data/mongod-shard
+    owner: mongodb
+    state: directory
+- name: Get the (private) IP address
+  with_items: "{{do_networks.v4}}"
+  when: item.type == 'private'
+  set_fact:
+    bind_ip: "{{item.ip_address}}"
+- name: Install config file
+  become: true
+  template:
+    src: mongod-shard.conf.j2
+    dest: /etc/mongod-shard.conf
+- name: Create mongo-data supervisor service
+  become: true
+  template: src=supervisor-mongod-shard.conf.j2 dest=/etc/supervisor/conf.d/mongod-shard.conf
+  notify:
+    - reload supervisor
+
+

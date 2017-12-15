@@ -1,0 +1,25 @@
+---
+# tasks file for mongo_common
+
+- name: Add MongoDB key
+  become: true
+  tags: install-mongo
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
+- name: Add MongoDB repo
+  become: true
+  tags: install-mongo
+  apt_repository:
+    repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse
+    state: present
+    update_cache: true
+- name: Install MongoDB
+  become: true
+  tags: install-mongo
+  apt:
+    name: mongodb-org
+    state: present
+- name: Install supervisor
+  become: true
+  apt: name=supervisor state=installed force=true
