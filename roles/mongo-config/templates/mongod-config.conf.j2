@@ -6,10 +6,10 @@ storage:
   dbPath: /data/mongod-config
   journal:
     enabled: true
-processManagement:
-  fork: true
+replication:
+  replSetName: config
 net:
-  bindIp: {{bind_ip}}
-  port: 27017
+  bindIp: {{bind_ip}},127.0.0.1
+  port: 27019
 setParameter:
   enableLocalhostAuthBypass: false

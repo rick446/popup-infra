@@ -8,7 +8,7 @@
     state: directory
 - name: Get the (private) IP address
   with_items: "{{do_networks.v4}}"
-  when: item.type == 'public'
+  when: item.type == 'private'
   set_fact:
     bind_ip: "{{item.ip_address}}"
 - name: Install config file
@@ -19,5 +19,7 @@
   template: src=supervisor-mongod-config.conf.j2 dest=/etc/supervisor/conf.d/mongod-config.conf
   notify:
     - reload supervisor
-
+- name: Ensure mongod-config is running
+  become: true
+  supervisorctl: name=mongod-config state=started
 

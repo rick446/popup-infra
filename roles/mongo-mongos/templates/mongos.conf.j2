@@ -9,7 +9,9 @@ storage:
 processManagement:
   fork: true
 net:
-  bindIp: {{bind_ip}}
+  bindIp: {{bind_ip}},127.0.0.1
   port: 27017
+sharding:
+  configdb: config/mongod-shard1-replica1:27019
 setParameter:
   enableLocalhostAuthBypass: false

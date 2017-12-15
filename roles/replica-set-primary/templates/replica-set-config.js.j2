@@ -1,0 +1,9 @@
+rs.initiate( {
+   _id : "{{rs_name}}",
+   members: [
+{% for host in groups[rs_name] %}
+   { _id : {{loop.index}}, host : "private-{{hostvars[host].do_name}}:{{mongo_port}}" }{% if not loop.last %},
+   {% endif %}
+{% endfor %}
+   ]
+})

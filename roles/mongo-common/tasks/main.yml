@@ -23,3 +23,9 @@
 - name: Install supervisor
   become: true
   apt: name=supervisor state=installed force=true
+- name: Ensure log dir is writeable
+  become: true
+  file:
+    state: directory
+    path: /var/log/mongodb
+    owner: mongodb

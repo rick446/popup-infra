@@ -6,10 +6,10 @@ storage:
   dbPath: /data/mongod-shard
   journal:
     enabled: true
-processManagement:
-  fork: true
+replication:
+  replSetName: {{shard_id}}
 net:
-  bindIp: {{bind_ip}}
-  port: 27017
+  bindIp: {{bind_ip}},127.0.0.1
+  port: 27018
 setParameter:
   enableLocalhostAuthBypass: false
