@@ -1,12 +1,18 @@
 - name: Set the name of the host
   set_fact:
     hostname: mongod-shard{{shard_id}}-replica{{replica_id}}
+    droplet_id: null
+- name: Set the DO droplet id
+  when: hostname in groups
+  set_fact:
+    droplet_id: "{{hostvars[groups[hostname][0]].do_id}}"
 - name: Provision {{hostname}}
   register: res
   digital_ocean:
     name: "{{hostname}}"
     state: present
     private_networking: yes
+    id: "{{droplet_id | int}}"
     wait: yes
     api_token: "{{do_api_token}}"
     size_id: 512mb
@@ -16,6 +22,7 @@
 - name: Apply mongo, replica, and shard tags
   with_items:
     - mongo
+    - shard
     - shard{{shard_id}}
     - replica{{replica_id}}
   digital_ocean_tag:
@@ -26,6 +33,7 @@
 - name: Apply config and mongos tags
   when: replica_id == "1"
   with_items:
+    - primary
     - config
     - mongos
   digital_ocean_tag:

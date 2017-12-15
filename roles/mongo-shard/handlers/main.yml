@@ -3,3 +3,6 @@
 - name: reload supervisor
   become: true
   command: supervisorctl reload
+- name: start mongod-shard
+  become: true
+  supervisorctl: name=mongod-shard state=restarted

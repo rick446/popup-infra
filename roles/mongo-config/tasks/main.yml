@@ -6,6 +6,8 @@
     path: /data/mongod-config
     owner: mongodb
     state: directory
+  notify:
+    - start mongod-config
 - name: Get the (private) IP address
   with_items: "{{do_networks.v4}}"
   when: item.type == 'private'
@@ -14,12 +16,11 @@
 - name: Install config file
   become: true
   template: src=mongod-config.conf.j2 dest=/etc/mongod-config.conf
+  notify:
+    - start mongod-config
 - name: Create mongo-data supervisor service
   become: true
   template: src=supervisor-mongod-config.conf.j2 dest=/etc/supervisor/conf.d/mongod-config.conf
   notify:
     - reload supervisor
-- name: Ensure mongod-config is running
-  become: true
-  supervisorctl: name=mongod-config state=started
-
+    - start mongod-config

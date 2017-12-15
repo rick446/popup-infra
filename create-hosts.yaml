@@ -1,7 +1,6 @@
 - hosts: localhost
-  vars:
-    do_api_token: "{{ lookup('ini', 'api_token section=digital_ocean file=digital_ocean.ini') }}"
-    replicas: 3
-    shards: 3
   roles:
     - controller
+- hosts: localhost
+  tasks:
+    - meta: refresh_inventory

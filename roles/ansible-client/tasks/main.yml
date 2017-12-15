@@ -8,13 +8,13 @@
   remote_user: root
 - name: create user
   user:
-      name: '{{username}}'
+      name: '{{ansible_username}}'
       groups: sudo
       shell: /bin/bash
   remote_user: root
 - name: Authorize the public key
   authorized_key:
-    user: '{{username}}'
+    user: '{{ansible_username}}'
     state: present
     key: https://raw.githubusercontent.com/Arborian/ansible-class/master/training-ssh-key.pub
   remote_user: root

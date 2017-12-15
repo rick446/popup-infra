@@ -10,7 +10,7 @@ net:
 sharding:
   configDB: config/
 {%- for host in groups.config -%}
-    private-{{hostvars[host].do_name}}:{{config_port}}
+    private-{{hostvars[host].do_name}}:{{configsvr_port}}
     {%- if not loop.last %},{% endif -%}
 {%- endfor %}
 

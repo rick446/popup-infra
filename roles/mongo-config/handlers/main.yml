@@ -3,3 +3,6 @@
 - name: reload supervisor
   become: true
   command: supervisorctl reload
+- name: start mongod-config
+  become: true
+  supervisorctl: name=mongod-config state=restarted

@@ -3,3 +3,6 @@
 - name: reload supervisor
   become: true
   command: supervisorctl reload
+- name: start mongos
+  become: true
+  supervisorctl: name=mongos state=restarted

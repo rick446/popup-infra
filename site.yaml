@@ -1,43 +1,8 @@
 ---
-- hosts: mongo
-  gather_facts: false
-  vars:
-    username: ansible
-  roles:
-    - role: ansible-client
+- import_playbook: create-hosts.yaml
+- import_playbook: bootstrap.yaml
+- import_playbook: mongo-shard.yaml
+- import_playbook: mongo-config.yaml
 
-- hosts: mongo
-  strategy: debug
-  roles:
-    - role: common
-    - role: mongo-common
-
-- hosts: mongo
-  roles:
-    - role: mongo-shard
-
-- hosts: config
-  roles:
-    - role: mongo-config
-
-- hosts: mongod-shard*-replica1
-  roles:
-    - role: replica-set-primary
-      vars:
-        mongo_port: 27018
-        rs_name: "{{do_name | regex_replace('mongod-(shard\\d)-replica.', '\\1')}}"
-    - role: replica-set-primary
-      vars:
-        mongo_port: 27019
-        rs_name: config
-
-- hosts: mongos
-  roles:
-    - role: mongo-mongos
-      vars:
-        config_port: 27019
-
-- hosts: mongod-shard1-replica1
-  roles:
-    - role: shard-primary
-
+- import_playbook: mongo-mongos.yaml
+- import_playbook: mongo-cluster.yaml

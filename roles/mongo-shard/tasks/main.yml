@@ -6,6 +6,8 @@
     path: /data/mongod-shard
     owner: mongodb
     state: directory
+  notify:
+    - start mongod-shard
 - name: Get the (private) IP address
   with_items: "{{do_networks.v4}}"
   when: item.type == 'private'
@@ -19,12 +21,12 @@
   template:
     src: mongod-shard.conf.j2
     dest: /etc/mongod-shard.conf
+  notify:
+    - start mongod-shard
 - name: Create mongo-data supervisor service
   become: true
   template: src=supervisor-mongod-shard.conf.j2 dest=/etc/supervisor/conf.d/mongod-shard.conf
   notify:
     - reload supervisor
-- name: Ensure mongod-shard is running
-  become: true
-  supervisorctl: name=mongod-shard state=started
+    - start mongod-shard
 
