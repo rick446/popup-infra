@@ -1,6 +1,6 @@
 ---
 # tasks file for replica-set-primary
-- name: Install config file
+- name: Install script file
   become: true
   template: src=replica-set-config.js.j2 dest=/home/ansible/rs-{{rs_name}}-config.js
 - name: Initialize the replica replica-set-config

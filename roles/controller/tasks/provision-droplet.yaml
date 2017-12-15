@@ -16,8 +16,8 @@
 - name: Apply mongo, replica, and shard tags
   with_items:
     - mongo
-    - shard_{{shard_id}}
-    - replica_{{replica_id}}
+    - shard{{shard_id}}
+    - replica{{replica_id}}
   digital_ocean_tag:
     api_token: "{{do_api_token}}"
     resource_id: "{{res.droplet.id}}"

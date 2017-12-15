@@ -13,7 +13,7 @@
     bind_ip: "{{item.ip_address}}"
 - name: Get the shard ID
   set_fact:
-    shard_id: shard_{{do_name | regex_replace("mongod-shard(\d)-replica.", "\1")}}
+    shard_id: "{{do_name | regex_replace('mongod-(shard\\d)-replica.', '\\1')}}"
 - name: Install config file
   become: true
   template:

@@ -1,11 +1,5 @@
 ---
 # tasks file for mongo-data
-- name: Create DB path
-  become: true
-  file:
-    path: /data/mongos
-    owner: mongodb
-    state: directory
 - name: Get the (private) IP address
   with_items: "{{do_networks.v4}}"
   when: item.type == 'public'
@@ -19,5 +13,7 @@
   template: src=supervisor-mongos.conf.j2 dest=/etc/supervisor/conf.d/mongos.conf
   notify:
     - reload supervisor
-
+- name: Ensure mongos is running
+  become: true
+  supervisorctl: name=mongos state=started
 
